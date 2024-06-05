@@ -66,6 +66,14 @@ function ProfileMenu() {
     navigate('/');
   };
 
+  const handleProfile = () => {
+    // Clear any application-specific data here
+    // For example, you might clear tokens or user session data
+    console.log("Signing out...");
+    // Redirect to the homepage or login page
+    navigate('/profile');
+  };
+
   return (
     <Menu open={isMenuOpen} handler={setIsMenuOpen} placement="bottom-end">
       <MenuHandler>
@@ -91,12 +99,15 @@ function ProfileMenu() {
       <MenuList className="p-1">
         {profileMenuItems.map(({ label, icon }, key) => {
           const isLastItem = key === profileMenuItems.length - 1;
+          const isFirstItem = key === profileMenuItems.length == 0;
           return (
             <MenuItem
               key={label}
               onClick={() => {
                 closeMenu();
+                if (isFirstItem) handleProfile();
                 if (isLastItem) handleSignOut();
+                
               }}
               className={`flex items-center gap-2 rounded ${isLastItem
                 ? "hover:bg-red-500/10 focus:bg-red-500/10 active:bg-red-500/10"
