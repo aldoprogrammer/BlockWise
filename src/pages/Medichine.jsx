@@ -3,7 +3,7 @@ import { Sidebar } from '../components/Sidebar';
 import { Topbar } from '../components/Topbar';
 import { Button } from '@material-tailwind/react';
 import QrCode from 'qrcode-reader';
-import Logo from '../assets/dhda.png';
+import Logo from '../assets/logo.png';
 import { ScaleLoader } from 'react-spinners';
 import { useAldoAlert } from 'aldo-alert';
 import ButtonBlockchain from '../components/ButtonBlockchain';

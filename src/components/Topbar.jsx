@@ -25,7 +25,7 @@ import {
   RocketLaunchIcon,
   Bars2Icon,
 } from "@heroicons/react/24/solid";
-import Logo from '../assets/dhda.png';
+import Logo from '../assets/logo.png';
 import { Link, useNavigate } from "react-router-dom";
 
 // profile menu component
@@ -256,13 +256,6 @@ export function Topbar() {
         <Link to="/">
           <img src={Logo} alt="" className="w-24 h-24" />
         </Link>
-        <Typography
-          as="a"
-          href="#"
-          className="mr-4 ml-2 cursor-pointer py-1.5 font-medium"
-        >
-          Decentralized Healthcare Data Analyzer (DHDA)
-        </Typography>
         <IconButton
           size="sm"
           color="blue-gray"

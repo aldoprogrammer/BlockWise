@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import QRCode from 'qrcode.react';
 import { useNavigate } from 'react-router-dom';
-import Logo from '../assets/dhda.png';
+import Logo from '../assets/logo.png';
 import { useAldoAlert } from 'aldo-alert';
 import { HashLoader } from 'react-spinners';
 import ButtonBlockchain from '../components/ButtonBlockchain';
