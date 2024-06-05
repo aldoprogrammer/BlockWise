@@ -42,21 +42,47 @@ export function Sidebar() {
             Medicine Store
           </ListItem>
         </Link>
-        <ListItem>
-          <ListItemPrefix>
-            <InboxIcon className="h-5 w-5" />
-          </ListItemPrefix>
-          Inbox
-          <ListItemSuffix>
-            <Chip value="14" size="sm" variant="ghost" color="blue-gray" className="rounded-full" />
-          </ListItemSuffix>
-        </ListItem>
+        <Link to='/domain-insight'>
+          <ListItem>
+            <ListItemPrefix>
+              <InboxIcon className="h-5 w-5" />
+            </ListItemPrefix>
+            Domain Insight
+            <ListItemSuffix>
+              <Chip value="14" size="sm" variant="ghost" color="blue-gray" className="rounded-full" />
+            </ListItemSuffix>
+          </ListItem>
+        </Link> 
+        <Link to='/transactions'>
+          <ListItem>
+            <ListItemPrefix>
+              <InboxIcon className="h-5 w-5" />
+            </ListItemPrefix>
+             Transactions
+            <ListItemSuffix>
+              <Chip value="14" size="sm" variant="ghost" color="blue-gray" className="rounded-full" />
+            </ListItemSuffix>
+          </ListItem>
+        </Link>
+        <Link to='/leaderboard'>
+          <ListItem>
+            <ListItemPrefix>
+              <InboxIcon className="h-5 w-5" />
+            </ListItemPrefix>
+            Leaderboard
+            <ListItemSuffix>
+              <Chip value="14" size="sm" variant="ghost" color="blue-gray" className="rounded-full" />
+            </ListItemSuffix>
+          </ListItem>
+        </Link>
+        <Link to='/profile'>
         <ListItem>
           <ListItemPrefix>
             <UserCircleIcon className="h-5 w-5" />
           </ListItemPrefix>
           Profile
         </ListItem>
+        </Link>
         <ListItem>
           <ListItemPrefix>
             <Cog6ToothIcon className="h-5 w-5" />
