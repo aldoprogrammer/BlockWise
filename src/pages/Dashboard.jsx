@@ -1,192 +1,167 @@
 import React, { useState } from 'react';
 import { Sidebar } from '../components/Sidebar';
 import { Topbar } from '../components/Topbar';
-import { Input, Textarea, Button, Select, Option } from '@material-tailwind/react';
+import { Input, Button } from '@material-tailwind/react';
 import { useAldoAlert } from 'aldo-alert';
-import QRCode from 'qrcode.react';
-import { Link } from 'react-router-dom';
-import { ScaleLoader } from 'react-spinners';
 
 const Dashboard = () => {
     const { showAldoAlert } = useAldoAlert();
 
-    const healthRisks = "Increased risk of heart disease, Higher susceptibility to respiratory infections, Higher probability of developing osteoporosis."
-    const recommendPreventiveMeasures = "Maintain a balanced diet rich in fruits and vegetables, Avoid tobacco smoke and limit alcohol consumption, Ensure regular check-ups with your healthcare provider."
-    const personalizedMedicine = "Paracetamol, Ibuprofen, Prednisone, Atorvastatin, Levothyroxine";
-    const earlyDiseaseDetection = "Blood tests to monitor cholesterol levels and detect heart disease risk, Regular screenings for cancer, such as mammograms or colonoscopies, Regular eye exams to detect vision problems or eye diseases."
-    const publicHealthMonitoring = "Follow public health guidelines regarding social distancing and mask-wearing, Report any symptoms of contagious illnesses to healthcare authorities, Advocate for policies that promote public health and safety."
-    const symptoms = "this is dummy symptoms"
-    const [patientDetails, setPatientDetails] = useState({
-        name: '',
-        age: '',
-        gender: '',
-        symptoms: symptoms,
-        healthRisks: healthRisks,
-        recommendPreventiveMeasures: recommendPreventiveMeasures,
-        personalizedMedicine: personalizedMedicine,
-        earlyDiseaseDetection: earlyDiseaseDetection,
-        publicHealthMonitoring: publicHealthMonitoring,
-    });
+    const [chatMessages, setChatMessages] = useState([]);
+    const [inputText, setInputText] = useState('');
+    const [showDomains, setShowDomains] = useState(false); // State to control displaying domains
+    const [selectedDomain, setSelectedDomain] = useState(null); // State to store selected domain
 
-    const [tab, setTab] = useState('image');
-    const [file, setFile] = useState(null);
-    const [qrCodeValue, setQrCodeValue] = useState('');
-    const [loading, setLoading] = useState(false); // State to manage the loading state
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setPatientDetails({
-            ...patientDetails,
-            [name]: value,
-        });
+    const handleInputChange = (e) => {
+        setInputText(e.target.value);
     };
 
-    const handleGenderChange = (value) => {
-        setPatientDetails({
-            ...patientDetails,
-            gender: value,
-        });
+    const handleSendMessage = () => {
+        if (inputText.trim() !== '') {
+            setChatMessages([...chatMessages, { text: inputText, fromUser: true }]);
+            setInputText('');
+    
+            // Simulate bot typing and generate response character by character
+            const botResponse = 'Hello, here is the recommendation for blockchain domain based on the tech that you provided'; // Bot response text
+            let currentIndex = 0;
+            const intervalId = setInterval(() => {
+                setChatMessages(prevMessages => {
+                    const newMessage = { text: botResponse.slice(0, currentIndex + 1), fromUser: false };
+                    const updatedMessages = [...prevMessages.slice(0, -1), newMessage];
+                    return updatedMessages;
+                });
+                currentIndex++;
+                if (currentIndex === botResponse.length) {
+                    clearInterval(intervalId);
+                    setShowDomains(true); // Show domains after bot's reply
+                }
+            }, 50); // Delay between each character
+        }
+    };
+    
+    
+
+    const handleDomainClick = (domain) => {
+        // Handle domain click, you can implement displaying details here
+        setSelectedDomain(domain);
     };
 
-    const handleFileChange = (e) => {
-        setFile(e.target.files[0]);
+    // Static data for each domain
+    const domainData = {
+        'Chainify.io': {
+            value: 'High',
+            opportunities: 'Many',
+            investmentChances: 'Promising',
+            suggestedInvestors: ['Microsoft', 'AWS', 'Google'],
+            investmentByTrending: 80
+        },
+        'CryptoHub.tech': {
+            value: 'Medium',
+            opportunities: 'Some',
+            investmentChances: 'Promising',
+            suggestedInvestors: ['Facebook', 'IBM', 'Intel'],
+            investmentByTrending: 70
+        },
+        'DecentralNet.com': {
+            value: 'High',
+            opportunities: 'Superb',
+            investmentChances: 'Highly Promising',
+            suggestedInvestors: ['Tesla', 'Apple', 'Amazon'],
+            investmentByTrending: 90
+        },
+        'TrustChain.biz': {
+            value: 'Low',
+            opportunities: 'Few',
+            investmentChances: 'Uncertain',
+            suggestedInvestors: ['Facebook', 'IBM', 'Intel'],
+            investmentByTrending: 60
+        },
+        'BlockBoost.org': {
+            value: 'Medium',
+            opportunities: 'Some',
+            investmentChances: 'Promising',
+            suggestedInvestors: ['Microsoft', 'AWS', 'Google'],
+            investmentByTrending: 75
+        }
     };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // Extract necessary data for the QR code
-        const { name, age, gender, symptoms, healthRisks, recommendPreventiveMeasures, personalizedMedicine, earlyDiseaseDetection, publicHealthMonitoring } = patientDetails;
-        // Combine patient details into one object
-        const qrData = {
-            name,
-            age,
-            gender,
-            symptoms,
-            healthRisks,
-            recommendPreventiveMeasures,
-            personalizedMedicine,
-            earlyDiseaseDetection,
-            publicHealthMonitoring,
-        };
-        // Convert the data to a string
-
-        const qrCodeValue = JSON.stringify(qrData);
-        setLoading(true);
-        setTimeout(() => {
-        // Store the JSON data in local storage
-        localStorage.setItem('qrCodeData', qrCodeValue);
-        setQrCodeValue(qrCodeValue);
-        console.log(qrCodeValue);
-        setLoading(false);
-        showAldoAlert("Scan disease successfully!", 'warning');
-       
-            // setQrCodeResult(qrCodeData);
-            // setLoading(false);
-        }, 3000);
-
-       
-    };
-
-
-
-
-
 
     return (
-        <div className='flex flex-col'>
+        <div className="flex flex-col h-screen">
             <Topbar />
-            <div className='flex'>
+            <div className="flex flex-grow">
                 <Sidebar />
-                <div className='flex flex-col w-full p-5'>
-                    <h1 className='text-xl font-semibold text-blue-gray-900'>
-                        Patient's Health Consultation
+                <div className="flex flex-col w-full p-5 bg-white rounded-lg shadow-md">
+                    <h1 className="text-xl font-semibold text-gray-800 mb-4">
+                        Domain Insight Analyzer
                     </h1>
-                    <form className='mt-5' onSubmit={handleSubmit}>
-                        <div className='mb-4'>
-                            <Input
-                                type='text'
-                                name='name'
-                                label='Name'
-                                value={patientDetails.name}
-                                onChange={handleChange}
-                                required
-                            />
-                        </div>
-                        <div className='mb-4'>
-                            <Input
-                                type='number'
-                                name='age'
-                                label='Age'
-                                value={patientDetails.age}
-                                onChange={handleChange}
-                                required
-                            />
-                        </div>
-                        <div className='mb-4'>
-                            <Select
-                                label="Gender"
-                                value={patientDetails.gender}
-                                onChange={handleGenderChange}
-                                required
-                            >
-                                <Option value="male">Male</Option>
-                                <Option value="female">Female</Option>
-                                <Option value="other">Other</Option>
-                            </Select>
-                        </div>
-                        <div className='mb-4'>
-                            <h2 className='block mb-2 text-xl font-bold '>
-                                Scan the Disease
-                            </h2>
-                            <div className='mb-4 gap-5 flex'>
-                                <Button
-                                    type='button'
-                                    onClick={() => setTab('image')}
-                                    className={tab === 'image' ? 'bg-blue-500' : ''}
-                                >
-                                    Upload Image
-                                </Button>
-                                <Button
-                                    type='button'
-                                    onClick={() => setTab('symptoms')}
-                                    className={tab === 'symptoms' ? 'bg-blue-500' : ''}
-                                >
-                                    Enter Symptoms
-                                </Button>
+                    <div className="chat-container h-2/5 flex flex-col flex-grow overflow-y-auto border rounded-md border-gray-200 p-4 mb-4 shadow-lg">
+                        {chatMessages.map((message, index) => (
+                            <div key={index} className={`chat-message mb-4 w-3/6 rounded-lg p-4 
+                                  ${message.fromUser ? 'ml-auto bg-gray-200' : 'mr-auto bg-blue-100'}`}>
+                                {message.text}
                             </div>
-                            {tab === 'image' ? (
-                                <div className='mb-4'>
-                                    <label className="block mb-2 text-sm font-medium text-gray-700">Upload File</label>
-                                    <input
-                                        type="file"
-                                        name="file"
-                                        onChange={handleFileChange}
-                                        className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
-                                    />
-                                </div>
-                            ) : (
-                                <Textarea
-                                    name='symptoms'
-                                    label='Symptoms'
-                                    value={patientDetails.symptoms}
-                                    onChange={handleChange}
-                                />
-                            )}
-                        </div>
-                        <Button type='submit'>
-                        {loading ? <ScaleLoader color='#ffffff' loading={loading} height={16} width={6} radius={2} margin={3} />
-                            : "Submit"}
-                            </Button>
-                    </form>
-                    {qrCodeValue && (
-                        <div className='mt-5'>
-                            <h2 className='text-lg font-semibold'>Generated QR Code:</h2>
-                            <QRCode value={qrCodeValue} />
-                            <Link to='/print-invoice'>
-                                <Button type='button' className='mt-5'>Print</Button>
-                            </Link>
-                        </div>
+                        ))}
+                        {showDomains && (
+                            <div className="domain-list">
+                                <h2 className="text-lg font-semibold text-gray-800 mb-2">Available Blockchain Domains:</h2>
+                                <ul>
+                                    <li onClick={() => handleDomainClick('Chainify.io')} className="cursor-pointer text-blue-500">Chainify.io</li>
+                                    <li onClick={() => handleDomainClick('CryptoHub.tech')} className="cursor-pointer text-blue-500">CryptoHub.tech</li>
+                                    <li onClick={() => handleDomainClick('DecentralNet.com')} className="cursor-pointer text-blue-500">DecentralNet.com</li>
+                                    <li onClick={() => handleDomainClick('TrustChain.biz')} className="cursor-pointer text-blue-500">TrustChain.biz</li>
+                                    <li onClick={() => handleDomainClick('BlockBoost.org')} className="cursor-pointer text-blue-500">BlockBoost.org</li>
+                                </ul>
+                            </div>
+                        )}
+                    </div>
+                    {selectedDomain && (
+                       <div className="domain-details mb-4 bg-white p-6 rounded-lg shadow-md">
+                       <h2 className="text-lg font-semibold text-gray-800 mb-4">{selectedDomain} Analyzing System:</h2>
+                       <div className="grid grid-cols-2 gap-4">
+                           <div>
+                               <p className="text-sm text-gray-600">Value:</p>
+                               <p className="text-lg font-semibold text-blue-500">{domainData[selectedDomain].value}</p>
+                           </div>
+                           <div>
+                               <p className="text-sm text-gray-600">Opportunities:</p>
+                               <p className="text-lg font-semibold text-blue-500">{domainData[selectedDomain].opportunities}</p>
+                           </div>
+                           <div>
+                               <p className="text-sm text-gray-600">Investment Chances:</p>
+                               <p className="text-lg font-semibold text-blue-500">{domainData[selectedDomain].investmentChances}</p>
+                           </div>
+                           <div>
+                               <p className="text-sm text-gray-600">Invested Chances:</p>
+                               <p className="text-lg font-semibold text-blue-500">{domainData[selectedDomain].suggestedInvestors.join(', ')}</p>
+                           </div>
+                           <div>
+                               <p className="text-sm text-gray-600">Investment by Trending:</p>
+                               <p className="text-lg font-semibold text-blue-500">{domainData[selectedDomain].investmentByTrending}%</p>
+                           </div>
+                       </div>
+                   </div>
+                   
                     )}
+                    <div className="input-container flex">
+                        <Input
+                            value={inputText}
+                            onChange={handleInputChange}
+                            placeholder="Type your message..."
+                            className="w-full mr-2"
+                        />
+                        <Button
+                            color="blue"
+                            buttonType="filled"
+                            size="regular"
+                            rounded={false}
+                            block={false}
+                            iconOnly={false}
+                            ripple="light"
+                            onClick={handleSendMessage}
+                        >
+                            Send
+                        </Button>
+                    </div>
                 </div>
             </div>
         </div>
