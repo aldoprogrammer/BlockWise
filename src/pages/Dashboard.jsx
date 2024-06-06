@@ -3,6 +3,7 @@ import { Sidebar } from '../components/Sidebar';
 import { Topbar } from '../components/Topbar';
 import { Input, Button } from '@material-tailwind/react';
 import { useAldoAlert } from 'aldo-alert';
+import CustomSpeakerIcon from '../components/CustomSpeakerIcon';
 
 const Dashboard = () => {
     const { showAldoAlert } = useAldoAlert();
@@ -18,17 +19,20 @@ const Dashboard = () => {
 
     const handleSendMessage = () => {
         if (inputText.trim() !== '') {
-            setChatMessages([...chatMessages, { text: inputText, fromUser: true }]);
+            // Add user's message to chatMessages
+            setChatMessages(prevMessages => [...prevMessages, { text: inputText, fromUser: true }]);
             setInputText('');
-    
+
             // Simulate bot typing and generate response character by character
             const botResponse = 'Hello, here is the recommendation for blockchain domain based on the tech that you provided'; // Bot response text
             let currentIndex = 0;
             const intervalId = setInterval(() => {
                 setChatMessages(prevMessages => {
-                    const newMessage = { text: botResponse.slice(0, currentIndex + 1), fromUser: false };
-                    const updatedMessages = [...prevMessages.slice(0, -1), newMessage];
-                    return updatedMessages;
+                    // Create a new array with all previous messages and add bot's message character by character
+                    return [
+                        ...prevMessages.slice(0, prevMessages.length - 1), // Keep previous messages
+                        { text: botResponse.slice(0, currentIndex + 1), fromUser: false } // Add new message
+                    ];
                 });
                 currentIndex++;
                 if (currentIndex === botResponse.length) {
@@ -38,8 +42,9 @@ const Dashboard = () => {
             }, 50); // Delay between each character
         }
     };
-    
-    
+
+
+
 
     const handleDomainClick = (domain) => {
         // Handle domain click, you can implement displaying details here
@@ -85,6 +90,16 @@ const Dashboard = () => {
         }
     };
 
+    function generateDomainText(selectedDomain) {
+        const domainDetails = domainData[selectedDomain];
+        return `${selectedDomain} Analyzing System. Value: ${domainDetails.value}. Opportunities: ${domainDetails.opportunities}. Investment Chances: ${domainDetails.investmentChances}. Invested Chances: ${domainDetails.suggestedInvestors.join(', ')}. Investment by Trending: ${domainDetails.investmentByTrending}%.`;
+    }
+
+    const readDomainData = (data) => {
+        const speech = new SpeechSynthesisUtterance(data);
+        window.speechSynthesis.speak(speech);
+    };
+
     return (
         <div className="flex flex-col h-screen">
             <Topbar />
@@ -115,33 +130,38 @@ const Dashboard = () => {
                         )}
                     </div>
                     {selectedDomain && (
-                       <div className="domain-details mb-4 bg-white p-6 rounded-lg shadow-md">
-                       <h2 className="text-lg font-semibold text-gray-800 mb-4">{selectedDomain} Analyzing System:</h2>
-                       <div className="grid grid-cols-2 gap-4">
-                           <div>
-                               <p className="text-sm text-gray-600">Value:</p>
-                               <p className="text-lg font-semibold text-blue-500">{domainData[selectedDomain].value}</p>
-                           </div>
-                           <div>
-                               <p className="text-sm text-gray-600">Opportunities:</p>
-                               <p className="text-lg font-semibold text-blue-500">{domainData[selectedDomain].opportunities}</p>
-                           </div>
-                           <div>
-                               <p className="text-sm text-gray-600">Investment Chances:</p>
-                               <p className="text-lg font-semibold text-blue-500">{domainData[selectedDomain].investmentChances}</p>
-                           </div>
-                           <div>
-                               <p className="text-sm text-gray-600">Invested Chances:</p>
-                               <p className="text-lg font-semibold text-blue-500">{domainData[selectedDomain].suggestedInvestors.join(', ')}</p>
-                           </div>
-                           <div>
-                               <p className="text-sm text-gray-600">Investment by Trending:</p>
-                               <p className="text-lg font-semibold text-blue-500">{domainData[selectedDomain].investmentByTrending}%</p>
-                           </div>
-                       </div>
-                   </div>
-                   
+                        <div className="flex flex-col mb-4 shadow-lg p-4 rounded-md relative">
+                            <h2 className="text-lg font-semibold text-gray-800">{selectedDomain} Analyzing Domain Results:</h2>
+                            <button onClick={() => readDomainData(generateDomainText(selectedDomain))} className="text-blue-500 hover:underline focus:outline-none absolute top-1 right-3 ">
+                                <CustomSpeakerIcon />
+                            </button>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <p className="text-sm text-gray-600">Value:</p>
+                                    <p className="text-lg font-semibold text-blue-500">{domainData[selectedDomain].value}</p>
+                                </div>
+                                <div>
+                                    <p className="text-sm text-gray-600">Opportunities:</p>
+                                    <p className="text-lg font-semibold text-blue-500">{domainData[selectedDomain].opportunities}</p>
+                                </div>
+                                <div>
+                                    <p className="text-sm text-gray-600">Investment Chances:</p>
+                                    <p className="text-lg font-semibold text-blue-500">{domainData[selectedDomain].investmentChances}</p>
+                                </div>
+                                <div>
+                                    <p className="text-sm text-gray-600">Invested Chances:</p>
+                                    <p className="text-lg font-semibold text-blue-500">{domainData[selectedDomain].suggestedInvestors.join(', ')}</p>
+                                </div>
+                                <div>
+                                    <p className="text-sm text-gray-600">Investment by Trending:</p>
+                                    <p className="text-lg font-semibold text-blue-500">{domainData[selectedDomain].investmentByTrending}%</p>
+                                </div>
+                            </div>
+                        </div>
                     )}
+
+
+
                     <div className="input-container flex">
                         <Input
                             value={inputText}

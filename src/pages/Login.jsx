@@ -70,9 +70,11 @@ export function Login() {
               }}
             />
           </div>
+          <Link to='/dashboard'>
           <Button className="mt-6" fullWidth>
-            <Link to='/dashboard'>Sign In</Link>
+            Sign In
           </Button>
+          </Link>
           {/* Create button for Metamask login */}
           <Button 
             className="mt-3 bg-yellow-900 hover:bg-gradient-to-r text-white font-bold duration-300 ease-out px-4 rounded w-full py-3"
