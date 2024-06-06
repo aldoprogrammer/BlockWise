@@ -1,18 +1,22 @@
-import React, { useState } from "react";
+// src/components/Login.jsx
+
+import React, { useEffect, useState } from 'react';
 import {
   Card,
   Input,
   Button,
   Typography,
-} from "@material-tailwind/react";
+} from '@material-tailwind/react';
 import Logo from '../assets/logo.png';
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from 'react-router-dom';
+import { useMetaMask } from '../context/MetaMaskContext.jsx';
 
 export function Login() {
   const navigate = useNavigate();
   const [isMetamaskInstalled, setIsMetamaskInstalled] = useState(false);
+  const { setMetaMaskAddress } = useMetaMask();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (typeof window.ethereum !== 'undefined') {
       setIsMetamaskInstalled(true);
     }
@@ -24,6 +28,7 @@ export function Login() {
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
         const account = accounts[0];
         console.log('Connected account:', account);
+        setMetaMaskAddress(account);
         // You can add your authentication logic here using the account address
         navigate('/dashboard');
       } else {
@@ -71,9 +76,9 @@ export function Login() {
             />
           </div>
           <Link to='/dashboard'>
-          <Button className="mt-6" fullWidth>
-            Sign In
-          </Button>
+            <Button className="mt-6" fullWidth>
+              Sign In
+            </Button>
           </Link>
           {/* Create button for Metamask login */}
           <Button 

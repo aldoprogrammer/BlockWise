@@ -21,7 +21,8 @@
     "react-dom": "^18.2.0",
     "react-qr-scanner": "^1.0.0-alpha.11",
     "react-router-dom": "^6.23.1",
-    "react-spinners": "^0.13.8"
+    "react-spinners": "^0.13.8",
+    "use-react-countries": "^2.0.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",

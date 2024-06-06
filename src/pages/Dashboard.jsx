@@ -110,6 +110,9 @@ const Dashboard = () => {
                         Domain Insight Analyzer
                     </h1>
                     <div className="chat-container h-2/5 flex flex-col flex-grow overflow-y-auto border rounded-md border-gray-200 p-4 mb-4 shadow-lg">
+                    <h1 className="text-xl font-semibold text-gray-800 mb-4 w-3/5">
+                        Talk To AI to get more insight and better way to choose you startup blockchain domain...
+                    </h1>
                         {chatMessages.map((message, index) => (
                             <div key={index} className={`chat-message mb-4 w-3/6 rounded-lg p-4 
                                   ${message.fromUser ? 'ml-auto bg-gray-200' : 'mr-auto bg-blue-100'}`}>

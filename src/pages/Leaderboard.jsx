@@ -6,6 +6,7 @@ import { useAldoAlert } from 'aldo-alert';
 import {
     ChevronUpDownIcon,
 } from "@heroicons/react/24/outline";
+import { Link } from 'react-router-dom';
 
 const Leaderboard = () => {
     const { showAldoAlert } = useAldoAlert();
@@ -239,13 +240,14 @@ const Leaderboard = () => {
                                                             />
                                                         </td>
                                                         <td className={classes}>
+                                                            <Link to='/buy'>
                                                             <Button
                                                                 color="blue"
                                                                 size="sm"
-                                                                onClick={() => alert(`Buying domain: ${domain.Domain}`)}
                                                             >
                                                                 Buy
                                                             </Button>
+                                                            </Link>
                                                         </td>
                                                     </tr>
                                                 );
