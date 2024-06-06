@@ -34,25 +34,6 @@ export function Sidebar() {
             Dashboard
           </ListItem>
         </Link>
-        <Link to='/medicine'>
-          <ListItem>
-            <ListItemPrefix>
-              <ShoppingBagIcon className="h-5 w-5" />
-            </ListItemPrefix>
-            Medicine Store
-          </ListItem>
-        </Link>
-        <Link to='/domain-insight'>
-          <ListItem>
-            <ListItemPrefix>
-              <InboxIcon className="h-5 w-5" />
-            </ListItemPrefix>
-            Domain Insight
-            <ListItemSuffix>
-              <Chip value="14" size="sm" variant="ghost" color="blue-gray" className="rounded-full" />
-            </ListItemSuffix>
-          </ListItem>
-        </Link> 
         <Link to='/transactions'>
           <ListItem>
             <ListItemPrefix>
