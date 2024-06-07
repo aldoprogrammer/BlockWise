@@ -87,12 +87,12 @@ export function Login() {
           >
             Connect with Metamask
           </Button>
-          <Typography color="gray" className="mt-4 text-center font-normal">
+          {/* <Typography color="gray" className="mt-4 text-center font-normal">
             Don't have an account?{" "}
             <a href="/register" className="font-medium text-gray-900">
               Sign Up
             </a>
-          </Typography>
+          </Typography> */}
         </form>
       </Card>
     </div>
