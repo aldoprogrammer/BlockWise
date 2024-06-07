@@ -12,6 +12,9 @@ const Dashboard = () => {
     const [inputText, setInputText] = useState('');
     const [showDomains, setShowDomains] = useState(false); // State to control displaying domains
     const [selectedDomain, setSelectedDomain] = useState(null); // State to store selected domain
+    const [isSpeaking, setIsSpeaking] = useState(false); // State to track if speech is currently playing
+
+    let currentSpeech = null; // Variable to hold the current speech synthesis object
 
     const handleInputChange = (e) => {
         setInputText(e.target.value);
@@ -43,11 +46,21 @@ const Dashboard = () => {
         }
     };
 
-
-
+    const readDomainData = (data) => {
+        if (isSpeaking && currentSpeech) {
+            // If speech is currently being read, stop it
+            window.speechSynthesis.cancel();
+            setIsSpeaking(false);
+        } else {
+            // If speech is not being read, start reading the data
+            const speech = new SpeechSynthesisUtterance(data);
+            window.speechSynthesis.speak(speech);
+            setIsSpeaking(true);
+            currentSpeech = speech;
+        }
+    };
 
     const handleDomainClick = (domain) => {
-        // Handle domain click, you can implement displaying details here
         setSelectedDomain(domain);
     };
 
@@ -94,11 +107,6 @@ const Dashboard = () => {
         const domainDetails = domainData[selectedDomain];
         return `${selectedDomain} Analyzing System. Value: ${domainDetails.value}. Opportunities: ${domainDetails.opportunities}. Investment Chances: ${domainDetails.investmentChances}. Invested Chances: ${domainDetails.suggestedInvestors.join(', ')}. Investment by Trending: ${domainDetails.investmentByTrending}%.`;
     }
-
-    const readDomainData = (data) => {
-        const speech = new SpeechSynthesisUtterance(data);
-        window.speechSynthesis.speak(speech);
-    };
 
     return (
         <div className="flex flex-col h-screen">
